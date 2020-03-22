@@ -10,8 +10,8 @@ def pipeline():
 
     dataset = tk.create_dataset(data_en, data_fr_in, data_fr_out)
 
-    return dataset
+    return data_en, data_fr_in, dataset
 
 
 if __name__ == '__main__':
-    dataset = pipeline()
+    dataset, data_en, data_fr_in = pipeline()
