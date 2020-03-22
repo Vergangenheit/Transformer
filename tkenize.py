@@ -1,7 +1,6 @@
 import tensorflow
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.data.Dataset import from_tensor_slices
 import numpy as np
 import config
 
@@ -25,7 +24,7 @@ def tokenize(raw_data_en, raw_data_fr_in, raw_data_fr_out):
 
 
 def create_dataset(data_en, data_fr_in, data_fr_out):
-    dataset = from_tensor_slices(
+    dataset = tensorflow.data.Dataset.from_tensor_slices(
         (data_en, data_fr_in, data_fr_out))
     dataset = dataset.shuffle(len(data_en)).batch(config.BATCH_SIZE)
 

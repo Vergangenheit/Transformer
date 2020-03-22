@@ -31,6 +31,8 @@ def create_raw_data() -> list:
     raw_data = []
     for line in lines.split('\n'):
         raw_data.append(line.split('\t'))
+    # The last element is empty, so omit it
+    raw_data = raw_data[:-1]
 
     return raw_data
 
@@ -49,8 +51,9 @@ def normalize_string(s):
     return s
 
 
-def split_raw_data(rawdata: list):
-    raw_data_en, raw_data_fr = list(zip(*rawdata))
+def split_raw_data():
+    raw_data = create_raw_data()
+    raw_data_en, raw_data_fr = list(zip(*raw_data))
     raw_data_en = [normalize_string(data) for data in raw_data_en]
     raw_data_fr_in = ['<start> ' + normalize_string(data) for data in raw_data_fr]
     raw_data_fr_out = [normalize_string(data) + ' <end>' for data in raw_data_fr]
