@@ -1,8 +1,7 @@
 import tensorflow
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-import numpy as np
-import config
+from config import config_trans
 import pickle
 
 
@@ -13,7 +12,7 @@ def tokenize(raw_data_en, raw_data_fr_in, raw_data_fr_out, save_en_tok=True, sav
     data_en = pad_sequences(data_en, padding='post')
     #save tokenizer
     if save_en_tok:
-        with open(config.EN_TOKENIZER, 'wb') as f:
+        with open(config_trans.EN_TOKENIZER, 'wb') as f:
             pickle.dump(en_tokenizer, f)
     fr_tokenizer = Tokenizer(filters='')
     fr_tokenizer.fit_on_texts(raw_data_fr_in)
@@ -25,7 +24,7 @@ def tokenize(raw_data_en, raw_data_fr_in, raw_data_fr_out, save_en_tok=True, sav
     data_fr_out = pad_sequences(data_fr_out, padding='post')
     # save fr_tokenizer
     if save_fr_tok:
-        with open(config.FR_TOKENIZER, 'wb') as f:
+        with open(config_trans.FR_TOKENIZER, 'wb') as f:
             pickle.dump(fr_tokenizer, f)
 
     return data_en, data_fr_in, data_fr_out
@@ -34,6 +33,6 @@ def tokenize(raw_data_en, raw_data_fr_in, raw_data_fr_out, save_en_tok=True, sav
 def create_dataset(data_en, data_fr_in, data_fr_out):
     dataset = tensorflow.data.Dataset.from_tensor_slices(
         (data_en, data_fr_in, data_fr_out))
-    dataset = dataset.shuffle(len(data_en)).batch(config.BATCH_SIZE)
+    dataset = dataset.shuffle(len(data_en)).batch(config_trans.BATCH_SIZE)
 
     return dataset

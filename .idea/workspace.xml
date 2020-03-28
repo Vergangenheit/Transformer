@@ -2,12 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5bf0b49a-a14b-4528-833d-21f42abf15ee" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Transformer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Transformer.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_trans.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_management.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/translation/dm_translation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tkenize.py" beforeDir="false" afterPath="$PROJECT_DIR$/tkenize.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/translation/pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/positional_embedding.py" beforeDir="false" afterPath="$PROJECT_DIR$/positional_embedding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/decoder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/decoder_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/encoder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/encoder_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tkenize.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/translation/tknize_translation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +41,14 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\PycharmProjects\Transformer\data_processing\translation" />
+      <recent name="C:\Users\User\PycharmProjects\Transformer" />
+      <recent name="C:\Users\User\PycharmProjects\Transformer\data_processing\config" />
+      <recent name="C:\Users\User\PycharmProjects\Transformer\data_processing" />
+    </key>
+  </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
       <list>
@@ -61,9 +75,9 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="378" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1584969461723">
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1585391179266">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="378" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1584969461723" />
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1585391179266" />
   </component>
 </project>

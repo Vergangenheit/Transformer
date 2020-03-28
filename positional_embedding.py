@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-import config
+from config import config_trans
 
 
 def positional_encodings(pos, model_size):
@@ -26,7 +26,7 @@ def build_pes(data_en, data_fr_in):
 
     pes = []
     for i in range(max_length):
-        pes.append(positional_encodings(i, config.MODEL_SIZE))
+        pes.append(positional_encodings(i, config_trans.MODEL_SIZE))
 
     pes = np.concatenate(pes, axis=0)
     pes = tf.constant(pes, dtype=tf.float32)

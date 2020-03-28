@@ -3,7 +3,7 @@ import requests
 from zipfile import ZipFile
 import unicodedata
 import re
-import config
+import config.config_trans as config
 
 
 def maybe_download_and_read_file(url, filename):
@@ -26,7 +26,7 @@ def maybe_download_and_read_file(url, filename):
 
 
 def create_raw_data() -> list:
-    lines = maybe_download_and_read_file(config.URL, config.FILENAME)
+    lines = maybe_download_and_read_file(config.URL, config.TRANS_FILENAME)
     lines = lines.decode('utf-8')
     raw_data = []
     for line in lines.split('\n'):

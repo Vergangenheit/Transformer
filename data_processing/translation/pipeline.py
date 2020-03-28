@@ -1,6 +1,4 @@
-import config
-import data_management as dm
-import tkenize as tk
+from data_processing.translation import dm_translation as dm, tknize_translation as tk
 
 
 def pipeline():
