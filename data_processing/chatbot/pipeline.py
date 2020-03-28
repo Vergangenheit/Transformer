@@ -2,14 +2,14 @@ import data_processing.chatbot.dm_chatbot as dm
 import data_processing.chatbot.tknize_chatbot as tk
 
 
-def pipeline():
-    inputs, outputs = dm.load_conversations()
-    tk.tokenize(inputs, outputs, True)
-    questions, answers = tk.tokenize_and_filter(inputs, outputs)
-    dataset = tk.create_dataset(questions, answers)
+def dataset_pipeline():
+    questions, answers = dm.load_conversations()
+    tk.tokenize(questions, answers, True)
+    tk_questions, tk_answers = tk.tokenize_and_filter(questions, answers)
+    dataset = tk.create_dataset(tk_questions, tk_answers)
 
-    return dataset
+    return questions, answers, dataset
 
 
 if __name__ == "__main__":
-    dataset = pipeline()
+    dataset = dataset_pipeline()

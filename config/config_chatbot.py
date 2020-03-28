@@ -24,3 +24,7 @@ BUFFER_SIZE = 20000
 MODEL_SIZE = 256
 NUM_LAYERS = 4
 H = 8
+EPOCHS = 20
+
+checkpoints_en = os.path.join(CHATBOT_PATH, 'checkpoints_transformer/encoder')
+checkpoints_de = os.path.join(CHATBOT_PATH, 'checkpoints_transformer/decoder')

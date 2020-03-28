@@ -1,7 +1,9 @@
 import tensorflow as tf
 from model import Encoder, Decoder
-from config import config_chatbot as config
-
+import config.config_chatbot as config
+import os
+import time
+import data_processing.chatbot.pipeline as pp
 
 def loss_function(targets, logits):
     mask = tf.math.logical_not(tf.math.equal(targets, 0))
@@ -36,9 +38,9 @@ class WarmupThenDecaySchedule(tf.keras.optimizers.schedules.LearningRateSchedule
 
 
 @tf.function
-def train_step(source_seq, target_seq_in, target_seq_out):
-    encoder = Encoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
-    decoder = Decoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
+def train_step(encoder, decoder, source_seq, target_seq_in, target_seq_out):
+    # encoder = Encoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
+    # decoder = Decoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
     lr = WarmupThenDecaySchedule(config.MODEL_SIZE)
     optimizer = tf.keras.optimizers.Adam(lr, beta_1=0.9, beta_2=0.98, epsilon=1e-9)
     with tf.GradientTape() as tape:
@@ -60,3 +62,36 @@ def train_step(source_seq, target_seq_in, target_seq_out):
     optimizer.apply_gradients(zip(gradients, variables))
 
     return loss
+
+
+def train():
+    if not os.path.exists(config.checkpoints_en):
+        os.makedirs(config.checkpoints_en)
+    if not os.path.exists(config.checkpoints_de):
+        os.makedirs(config.checkpoints_de)
+
+    # Uncomment these lines for inference mode
+    # encoder_checkpoint = tf.train.latest_checkpoint(config.checkpoints_en)
+    # decoder_checkpoint = tf.train.latest_checkpoint(config.checkpoints_de)
+
+    encoder = Encoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
+    decoder = Decoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
+
+    # if encoder_checkpoint is not None and decoder_checkpoint is not None:
+    #     encoder.load_weights(encoder_checkpoint)
+    #     decoder.load_weights(decoder_checkpoint)
+
+    starttime = time.time()
+    dataset = pp.dataset_pipeline()
+    for e in range(config.EPOCHS):
+        encoder.save_weights('checkpoints/encoder/encoder_{}.h5'.format(e + 1))
+        decoder.save_weights('checkpoints/decoder/decoder_{}.h5'.format(e + 1))
+        for batch, (source_seq, target_seq_in, target_seq_out) in enumerate(dataset.take(-1)):
+            loss = train_step(encoder, decoder, source_seq, target_seq_in, target_seq_out)
+            if batch % 100 == 0:
+                print('Epoch {} Batch {} Loss {:.4f} Elapsed time {:.2f}s'.format(
+                    e + 1, batch, loss.numpy(), time.time() - starttime))
+                starttime = time.time()
+
+
+
