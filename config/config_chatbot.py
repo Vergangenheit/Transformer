@@ -15,6 +15,7 @@ TOKENIZER = os.path.join(CHATBOT_PATH, 'chatbot_tokenizer.pkl')
 
 with open(TOKENIZER, 'rb') as f:
     tokenizer = pickle.load(f)
+PES = os.path.join(CHATBOT_PATH, 'pes.pkl')
 
 START_TOKEN, END_TOKEN = [tokenizer.vocab_size], [tokenizer.vocab_size + 1]
 VOCAB_SIZE = tokenizer.vocab_size + 2

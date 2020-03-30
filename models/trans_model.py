@@ -1,4 +1,4 @@
-from config import config_trans
+import config.config_trans as config
 import tensorflow as tf
 
 
@@ -122,7 +122,7 @@ class Encoder(tf.keras.Model):
         self.attention_norm = [tf.keras.layers.BatchNormalization(
             epsilon=1e-6) for _ in range(num_layers)]
         self.dense_1 = [tf.keras.layers.Dense(
-            config_trans.MODEL_SIZE * 4, activation='relu') for _ in range(num_layers)]
+            config.MODEL_SIZE * 4, activation='relu') for _ in range(num_layers)]
         self.dense_2 = [tf.keras.layers.Dense(
             model_size) for _ in range(num_layers)]
         self.ffn_dropout = [tf.keras.layers.Dropout(0.1) for _ in range(num_layers)]
@@ -204,7 +204,7 @@ class Decoder(tf.keras.Model):
         self.attention_mid_dropout = [tf.keras.layers.Dropout(0.1) for _ in range(num_layers)]
         self.attention_mid_norm = [tf.keras.layers.BatchNormalization(epsilon=1e-6) for _ in range(num_layers)]
 
-        self.dense_1 = [tf.keras.layers.Dense(config_trans.MODEL_SIZE * 0.4, activation='relu') for _ in range(num_layers)]
+        self.dense_1 = [tf.keras.layers.Dense(config.MODEL_SIZE * 0.4, activation='relu') for _ in range(num_layers)]
         self.dense_2 = [tf.keras.layers.Dense(
             model_size) for _ in range(num_layers)]
         self.ffn_dropout = [tf.keras.layers.Dropout(0.1) for _ in range(num_layers)]

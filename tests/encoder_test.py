@@ -1,5 +1,5 @@
 from config import config_trans
-import model
+from models import trans_model
 import pickle
 from data_processing.translation import pipeline as pp
 import positional_embedding as pe
@@ -14,7 +14,7 @@ def run_test():
         en_tokenizer = pickle.load(f)
 
     vocab_size = len(en_tokenizer.word_index) + 1
-    encoder = model.Encoder(vocab_size, config_trans.MODEL_SIZE, config_trans.NUM_LAYERS, config_trans.H)
+    encoder = trans_model.Encoder(vocab_size, config_trans.MODEL_SIZE, config_trans.NUM_LAYERS, config_trans.H)
     print(vocab_size)
     sequence_in = tf.constant([[1, 2, 3, 0, 0]])
     encoder_output, _ = encoder(pes, sequence_in)

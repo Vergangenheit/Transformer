@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
-from config import config_trans
+import config.config_chatbot as config
+import pickle
 
 
 def positional_encodings(pos, model_size):
@@ -26,13 +27,14 @@ def build_pes(data_en, data_fr_in):
 
     pes = []
     for i in range(max_length):
-        pes.append(positional_encodings(i, config_trans.MODEL_SIZE))
+        pes.append(positional_encodings(i, config.MODEL_SIZE))
 
     pes = np.concatenate(pes, axis=0)
     pes = tf.constant(pes, dtype=tf.float32)
-
+    # save pes
+    with open(config.PES, 'wb') as f:
+        pickle.dump(pes, f)
     return pes
-
 
 # if __name__ == '__main__':
 #     pes = build_pes(data_en, data_fr_in)

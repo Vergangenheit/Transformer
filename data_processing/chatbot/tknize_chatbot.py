@@ -49,15 +49,17 @@ def tokenize_and_filter(inputs, outputs):
 def create_dataset(questions, answers):
     # decoder inputs use the previous target as input
     # remove START_TOKEN from targets
-    dataset = tf.data.Dataset.from_tensor_slices((
-        {'inputs': questions,
-         'dec_inputs': answers[:, :-1]},
-        {'outputs': answers[:, 1:]}
-    ))
-    dataset = dataset.cache()
-    dataset = dataset.shuffle(config.BUFFER_SIZE)
-    dataset = dataset.batch(config.BATCH_SIZE)
-    dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
+    # dataset = tf.data.Dataset.from_tensor_slices((
+    #     {'inputs': questions,
+    #      'dec_inputs': answers[:, :-1]},
+    #     {'outputs': answers[:, 1:]}
+    # ))
+    dataset = tf.data.Dataset.from_tensor_slices((questions, answers[:, :-1], answers[:, 1:]))
+    dataset = dataset.shuffle(len(questions)).batch(config.BATCH_SIZE)
+    # dataset = dataset.cache()
+    # dataset = dataset.shuffle(config.BUFFER_SIZE)
+    # dataset = dataset.batch(config.BATCH_SIZE)
+    # dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
 
     return dataset
 
