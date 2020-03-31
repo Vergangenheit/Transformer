@@ -5,13 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_chatbot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_processing/chatbot/tknize_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/chatbot/tknize_chatbot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/trans_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/positional_embedding.py" beforeDir="false" afterPath="$PROJECT_DIR$/positional_embedding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/predict.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/decoder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/decoder_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/encoder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/encoder_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train/train_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/train/train_chatbot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train/train_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/train/train_trans.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,9 +69,9 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="378" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1585554289691">
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1585638453537">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="378" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1585554289691" />
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1585638453537" />
   </component>
 </project>

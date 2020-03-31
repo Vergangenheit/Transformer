@@ -1,96 +1,82 @@
-import tensorflow as tf
-from models.trans_model import Encoder, Decoder
 import config.config_chatbot as config
+import models.chatbot_model as ch_model
+import tensorflow as tf
 import os
-import time
-import data_processing.chatbot.pipeline as pp
 
 
-def loss_function(targets, logits):
-    mask = tf.math.logical_not(tf.math.equal(targets, 0))
-    mask = tf.cast(mask, dtype=tf.int64)
-    crossentropy = tf.keras.losses.SparseCategoricalCrossentropy(
-        from_logits=True)
-    loss = crossentropy(targets, logits, sample_weight=mask)
+# model = model.transformer(
+#     vocab_size=config.VOCAB_SIZE,
+#     num_layers=config.NUM_LAYERS,
+#     units=config.UNITS,
+#     d_model=config.D_MODEL,
+#     num_heads=config.NUM_HEADS,
+#     dropout=config.DROPOUT)
 
-    return loss
+
+def loss_function(y_true, y_pred):
+    y_true = tf.reshape(y_true, shape=(-1, config.MAX_LENGTH - 1))
+
+    loss = tf.keras.losses.SparseCategoricalCrossentropy(
+        from_logits=True, reduction='none')(y_true, y_pred)
+
+    mask = tf.cast(tf.not_equal(y_true, 0), tf.float32)
+    loss = tf.multiply(loss, mask)
+
+    return tf.reduce_mean(loss)
 
 
-class WarmupThenDecaySchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
-    """ Learning schedule for training the Transformer
-    Attributes:
-        model_size: d_model in the paper (depth size of the model)
-        warmup_steps: number of warmup steps at the beginning
-    """
+class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
 
-    def __init__(self, model_size, warmup_steps=4000):
-        super(WarmupThenDecaySchedule, self).__init__()
+    def __init__(self, d_model, warmup_steps=4000):
+        super(CustomSchedule, self).__init__()
 
-        self.model_size = model_size
-        self.model_size = tf.cast(self.model_size, tf.float32)
+        self.d_model = d_model
+        self.d_model = tf.cast(self.d_model, tf.float32)
 
         self.warmup_steps = warmup_steps
 
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'd_model': self.d_model,
+            'warmup_steps' : self.warmup_steps
+        })
+        return config
+
     def __call__(self, step):
-        step_term = tf.math.rsqrt(step)
-        warmup_term = step * (self.warmup_steps ** -1.5)
+        arg1 = tf.math.rsqrt(step)
+        arg2 = step * (self.warmup_steps ** -1.5)
 
-        return tf.math.rsqrt(self.model_size) * tf.math.minimum(step_term, warmup_term)
-
-
-@tf.function
-def train_step(pes, encoder, decoder, source_seq, target_seq_in, target_seq_out):
-    # encoder = Encoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
-    # decoder = Decoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
-    lr = WarmupThenDecaySchedule(config.MODEL_SIZE)
-    optimizer = tf.keras.optimizers.Adam(lr, beta_1=0.9, beta_2=0.98, epsilon=1e-9)
-    with tf.GradientTape() as tape:
-        encoder_mask = 1 - tf.cast(tf.equal(source_seq, 0), dtype=tf.float32)
-        # encoder_mask has shape (batch_size, source_len)
-        # we need to add two more dimensions in between
-        # to make it broadcastable when computing attention heads
-        encoder_mask = tf.expand_dims(encoder_mask, axis=1)
-        encoder_mask = tf.expand_dims(encoder_mask, axis=1)
-        encoder_output, _ = encoder(pes, source_seq, encoder_mask=encoder_mask)
-
-        decoder_output, _, _ = decoder(pes,
-                                       target_seq_in, encoder_output, encoder_mask=encoder_mask)
-
-        loss = loss_function(target_seq_out, decoder_output)
-
-    variables = encoder.trainable_variables + decoder.trainable_variables
-    gradients = tape.gradient(loss, variables)
-    optimizer.apply_gradients(zip(gradients, variables))
-
-    return loss
+        return tf.math.rsqrt(self.d_model) * tf.math.minimum(arg1, arg2)
 
 
-def train(dataset, pes):
-    if not os.path.exists(config.checkpoints_en):
-        os.makedirs(config.checkpoints_en)
-    if not os.path.exists(config.checkpoints_de):
-        os.makedirs(config.checkpoints_de)
+def accuracy(y_true, y_pred):
+    # ensure labels have shape (batch_size, MAX_LENGTH - 1)
+    y_true = tf.reshape(y_true, shape=(-1, config.MAX_LENGTH - 1))
+    accuracy = tf.metrics.SparseCategoricalAccuracy()(y_true, y_pred)
+    return accuracy
 
-    # Uncomment these lines for inference mode
-    # encoder_checkpoint = tf.train.latest_checkpoint(config.checkpoints_en)
-    # decoder_checkpoint = tf.train.latest_checkpoint(config.checkpoints_de)
 
-    encoder = Encoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
-    decoder = Decoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
+def train(dataset):
+    tf.keras.backend.clear_session()
+    learning_rate = CustomSchedule(config.MODEL_SIZE)
 
-    # if encoder_checkpoint is not None and decoder_checkpoint is not None:
-    #     encoder.load_weights(encoder_checkpoint)
-    #     decoder.load_weights(decoder_checkpoint)
+    optimizer = tf.keras.optimizers.Adam(
+        learning_rate, beta_1=0.9, beta_2=0.98, epsilon=1e-9)
 
-    starttime = time.time()
-    # dataset = pp.dataset_pipeline()
-    for e in range(config.EPOCHS):
-        for batch, (source_seq, target_seq_in, target_seq_out) in enumerate(dataset.take(-1)):
-            loss = train_step(pes, encoder, decoder, source_seq, target_seq_in, target_seq_out)
-            if batch % 100 == 0:
-                print('Epoch {} Batch {} Loss {:.4f} Elapsed time {:.2f}s'.format(
-                    e + 1, batch, loss.numpy(), time.time() - starttime))
-                starttime = time.time()
+    model = ch_model.transformer(
+        vocab_size=config.VOCAB_SIZE,
+        num_layers=config.NUM_LAYERS,
+        units=config.UNITS,
+        d_model=config.MODEL_SIZE,
+        num_heads=config.NUM_HEADS,
+        dropout=config.DROPOUT)
 
-        encoder.save_weights(os.path.join(config.checkpoints_en, 'encoder_{}.h5'.format(e + 1)))
-        decoder.save_weights(os.path.join(config.checkpoints_de, 'decoder_{}.h5'.format(e + 1)))
+    model.compile(optimizer=optimizer, loss=loss_function, metrics=[tf.metrics.SparseCategoricalAccuracy()])
+    # instantiate checkpoint to save the models after every epoch
+    if not os.path.exists(config.ckpt_path):
+        os.makedirs(config.ckpt_path)
+    # callback_checkpoint = tf.keras.callbacks.ModelCheckpoint(config.file_path, monitor='loss',
+    #                                                          verbose=2, save_best_only=False, mode='min', period=1)
+    model.fit(dataset, epochs=config.EPOCHS, verbose=2)
+    model.save_weights(config.model_weights)

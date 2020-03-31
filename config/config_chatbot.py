@@ -23,9 +23,13 @@ VOCAB_SIZE = tokenizer.vocab_size + 2
 BATCH_SIZE = 64
 BUFFER_SIZE = 20000
 MODEL_SIZE = 256
-NUM_LAYERS = 4
-H = 8
+NUM_LAYERS = 2
+NUM_HEADS = 8
+#H = 8
 EPOCHS = 20
+DROPOUT = 0.1
+UNITS = 512
 
-checkpoints_en = os.path.join(CHATBOT_PATH, 'checkpoints_transformer/encoder')
-checkpoints_de = os.path.join(CHATBOT_PATH, 'checkpoints_transformer/decoder')
+ckpt_path = os.path.join(CHATBOT_PATH, 'ckpt_transformer_chatbot')
+file_path = os.path.join(ckpt_path, "chatbot_transformer-epoch{epoch:03d}.hdf5")
+model_weights = os.path.join(ckpt_path, "chatbot_transformer.h5")
