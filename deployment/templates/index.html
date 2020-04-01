@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transformer Chatbot</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <center>Chatting with the help of a Transformer</center>
+        </h1>
+
+        {% block content %}
+        {% for message in form.seed.errors %}
+        <div class="flash">{{ message }}</div>
+        {% endfor %}
+
+        <form method=post>
+            {{ form.seed.label }}
+            {{ form.seed }}
+
+            {{ form.submit }}
+        </form>
+        {% endblock %}
+    </div>
+</body>
+</html>

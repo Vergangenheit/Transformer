@@ -16,6 +16,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -30,6 +31,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Transformer_Chatbot" />
@@ -37,11 +39,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\PycharmProjects\Transformer_Chatbot\deployment\static\images" />
+      <recent name="C:\Users\User\PycharmProjects\Transformer_Chatbot\deployment\static\css" />
+      <recent name="C:\Users\User\PycharmProjects\Transformer_Chatbot\data_processing" />
       <recent name="C:\Users\User\PycharmProjects\Transformer\models" />
       <recent name="C:\Users\User\PycharmProjects\Transformer\data_processing\translation" />
-      <recent name="C:\Users\User\PycharmProjects\Transformer" />
-      <recent name="C:\Users\User\PycharmProjects\Transformer\data_processing\config" />
-      <recent name="C:\Users\User\PycharmProjects\Transformer\data_processing" />
     </key>
   </component>
   <component name="RunManager">
