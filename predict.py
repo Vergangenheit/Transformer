@@ -1,48 +1,88 @@
 import config.config_chatbot as config
 import pickle
+import models.chatbot_model as ch_model
 from data_processing.chatbot.dm_chatbot import preprocess_sentence
 from models.trans_model import Decoder, Encoder
 import tensorflow as tf
+import os
+import train.train_chatbot as train
 
 
-def evaluate(pes, sentence=None):
+def load_model():
+    tf.keras.backend.clear_session()
+    learning_rate = train.CustomSchedule(config.MODEL_SIZE)
+
+    optimizer = tf.keras.optimizers.Adam(
+        learning_rate, beta_1=0.9, beta_2=0.98, epsilon=1e-9)
+    model = ch_model.transformer(
+        vocab_size=config.VOCAB_SIZE,
+        num_layers=config.NUM_LAYERS,
+        units=config.UNITS,
+        d_model=config.MODEL_SIZE,
+        num_heads=config.NUM_HEADS,
+        dropout=config.DROPOUT)
+
+    model.compile(optimizer=optimizer, loss=train.loss_function, metrics=[tf.metrics.SparseCategoricalAccuracy()])
+
+    # load weights
+    model.load_weights(config.model_weights)
+
+    return model
+
+
+def evaluate(sentence=None):
     sentence = preprocess_sentence(sentence)
     with open(config.TOKENIZER, 'rb') as f:
         tokenizer = pickle.load(f)
     sentence = tf.expand_dims(
         config.START_TOKEN + tokenizer.encode(sentence) + config.END_TOKEN, axis=0)
-    de_input = tf.expand_dims(config.START_TOKEN, 0)
+    output = tf.expand_dims(config.START_TOKEN, 0)
 
-    # load encoder and decoder
-    encoder_checkpoint = tf.train.latest_checkpoint(config.checkpoints_en)
-    decoder_checkpoint = tf.train.latest_checkpoint(config.checkpoints_de)
-    encoder = Encoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
-    decoder = Decoder(config.VOCAB_SIZE, config.MODEL_SIZE, config.NUM_LAYERS, config.H)
-    if encoder_checkpoint is not None and decoder_checkpoint is not None:
-        encoder.load_weights(encoder_checkpoint)
-        decoder.load_weights(decoder_checkpoint)
-    en_output, en_alignments = encoder(pes, tf.constant(sentence, dtype=tf.int32), training=False)
+    # load saved model
+    tf.keras.backend.clear_session()
+    learning_rate = train.CustomSchedule(config.MODEL_SIZE)
+
+    optimizer = tf.keras.optimizers.Adam(
+        learning_rate, beta_1=0.9, beta_2=0.98, epsilon=1e-9)
+    model = ch_model.transformer(
+        vocab_size=config.VOCAB_SIZE,
+        num_layers=config.NUM_LAYERS,
+        units=config.UNITS,
+        d_model=config.MODEL_SIZE,
+        num_heads=config.NUM_HEADS,
+        dropout=config.DROPOUT)
+
+    model.compile(optimizer=optimizer, loss=train.loss_function, metrics=[tf.metrics.SparseCategoricalAccuracy()])
+
+    # load weights
+    model.load_weights(config.model_weights)
 
     for i in range(config.MAX_LENGTH):
-        de_output, de_bot_alignments, de_mid_alignments = decoder(pes, de_input, en_output, training=False)
+        predictions = model(inputs=[sentence, output], training=False)
 
-        new_word = tf.cast(tf.expand_dims(tf.argmax(de_output, -1)[:, -1], axis=1), tf.int32)
+        # select the last word from the seq_len dimension
+        predictions = predictions[:, -1:, :]
+        predicted_id = tf.cast(tf.argmax(predictions, axis=-1), tf.int32)
 
         # return the result if the predicted_id is equal to the end token
-        if tf.equal(new_word, config.END_TOKEN[0]):
+        if tf.equal(predicted_id, config.END_TOKEN[0]):
             break
-        # concatenated the predicted_id to the output which is given to the decoder as its input.
-        output = tf.concat([de_input, new_word], axis=-1)
+
+        # concatenated the predicted_id to the output which is given to the decoder
+        # as its input.
+        output = tf.concat([output, predicted_id], axis=-1)
 
     return tf.squeeze(output, axis=0)
 
 
 def predict(sentence):
-    with open(config.PES, 'rb') as f:
-        pes = pickle.load(f)
-    prediction = evaluate(pes, sentence)
+    prediction = evaluate(sentence)
     with open(config.TOKENIZER, 'rb') as f:
         tokenizer = pickle.load(f)
-    predicted_sentence = tokenizer.decode([i for i in prediction if i < tokenizer.vocab_size])
+    predicted_sentence = tokenizer.decode(
+        [i for i in prediction if i < tokenizer.vocab_size])
+
+    print('Input: {}'.format(sentence))
+    print('Output: {}'.format(predicted_sentence))
 
     return predicted_sentence

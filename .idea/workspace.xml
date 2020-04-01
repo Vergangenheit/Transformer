@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5bf0b49a-a14b-4528-833d-21f42abf15ee" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_chatbot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_processing/chatbot/tknize_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/chatbot/tknize_chatbot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train/train_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/train/train_trans.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/predict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_prediction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train/train_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/train/train_chatbot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,9 +68,9 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="378" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1585638453537">
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1585726658373">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="378" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1585638453537" />
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1585726658373" />
   </component>
 </project>

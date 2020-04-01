@@ -4,15 +4,6 @@ import tensorflow as tf
 import os
 
 
-# model = model.transformer(
-#     vocab_size=config.VOCAB_SIZE,
-#     num_layers=config.NUM_LAYERS,
-#     units=config.UNITS,
-#     d_model=config.D_MODEL,
-#     num_heads=config.NUM_HEADS,
-#     dropout=config.DROPOUT)
-
-
 def loss_function(y_true, y_pred):
     y_true = tf.reshape(y_true, shape=(-1, config.MAX_LENGTH - 1))
 
@@ -39,7 +30,7 @@ class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
         config = super().get_config().copy()
         config.update({
             'd_model': self.d_model,
-            'warmup_steps' : self.warmup_steps
+            'warmup_steps': self.warmup_steps
         })
         return config
 
