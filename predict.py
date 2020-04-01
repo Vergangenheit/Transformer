@@ -1,10 +1,8 @@
 import config.config_chatbot as config
 import pickle
 import models.chatbot_model as ch_model
-from data_processing.chatbot.dm_chatbot import preprocess_sentence
-from models.trans_model import Decoder, Encoder
+from data_processing.dm_chatbot import preprocess_sentence
 import tensorflow as tf
-import os
 import train.train_chatbot as train
 
 

@@ -1,5 +1,5 @@
-import data_processing.chatbot.dm_chatbot as dm
-import data_processing.chatbot.tknize_chatbot as tk
+import data_processing.dm_chatbot as dm
+import data_processing.tknize_chatbot as tk
 
 
 def dataset_pipeline():

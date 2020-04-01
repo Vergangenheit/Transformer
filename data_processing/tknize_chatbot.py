@@ -1,6 +1,5 @@
 import tensorflow_datasets as tfds
 import tensorflow as tf
-from data_processing.chatbot import dm_chatbot as dm
 import config.config_chatbot as config
 import pickle
 

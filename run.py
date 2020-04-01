@@ -1,4 +1,4 @@
-from data_processing.chatbot import pipeline as pp
+from data_processing import pipeline as pp
 import train.train_chatbot as train
 
 
