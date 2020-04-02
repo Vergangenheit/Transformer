@@ -1,3 +1,3 @@
 # Transformer
 
-Packaging Trung Tran's brilliant tutorial https://machinetalk.org/2019/04/29/create-the-transformer-with-tensorflow-2-0/
+Packaging tensorflow's team brilliant tutorial https://medium.com/tensorflow/a-transformer-chatbot-tutorial-with-tensorflow-2-0-88bf59e66fe2 and build a REST API to service the chatbot
