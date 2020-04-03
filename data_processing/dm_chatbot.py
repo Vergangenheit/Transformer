@@ -1,5 +1,5 @@
 import re
-from config import config_chatbot as config
+import config_chatbot as config
 
 
 def preprocess_sentence(sentence):

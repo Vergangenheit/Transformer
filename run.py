@@ -1,13 +1,8 @@
 from flask import Flask, render_template, request
-from deployment.forms import ReusableForm
-from deployment.utils import generate_from_seed, load_tf_model
+from forms import ReusableForm
+from utils import generate_from_seed, load_tf_model
 
 app = Flask(__name__)
-
-
-# @app.route("/")
-# def hello():
-#     return "<h1>This is the start</h1>"
 
 
 # home page
@@ -23,5 +18,5 @@ def home():
 
 
 if __name__ == "__main__":
-    load_tf_model()
+    model = load_tf_model()
     app.run(host='0.0.0.0', port=50000, debug=True)

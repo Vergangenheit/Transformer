@@ -1,6 +1,6 @@
 import tensorflow_datasets as tfds
 import tensorflow as tf
-import config.config_chatbot as config
+import config_chatbot as config
 import pickle
 
 

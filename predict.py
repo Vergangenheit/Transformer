@@ -1,4 +1,4 @@
-import config.config_chatbot as config
+import config_chatbot as config
 import pickle
 import models.chatbot_model as ch_model
 from data_processing.dm_chatbot import preprocess_sentence
