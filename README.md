@@ -7,8 +7,9 @@ To use the web app:
 pip install flask gevent requests
 
 clone the repo:
+
 git clone https://github.com/Vergangenheit/Transformer_Chatbot
 
 python run.py
 
-Will run on localhost:50000
+"""Will run on localhost:50000"""
